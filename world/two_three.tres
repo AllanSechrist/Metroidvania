@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="DoorConnection" load_steps=2 format=3 uid="uid://cni8td8ied00q"]
+
+[ext_resource type="Script" path="res://scripts/door_connection.gd" id="1_jtt37"]
+
+[resource]
+script = ExtResource("1_jtt37")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtgpopiclraui"]
+
+[ext_resource type="Script" path="res://scenes/trigger.gd" id="1_iur20"]
+
+[node name="Trigger" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_iur20")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

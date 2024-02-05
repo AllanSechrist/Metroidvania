@@ -1,0 +1,100 @@
+[gd_scene load_steps=14 format=3 uid="uid://f6o3q02qtw7l"]
+
+[ext_resource type="Script" path="res://scripts/crawling_enemy.gd" id="1_7c8f0"]
+[ext_resource type="Texture2D" uid="uid://b1demfsukjh8v" path="res://enemies/crawling_enemy.png" id="1_umauv"]
+[ext_resource type="PackedScene" uid="uid://qbi5wmnc6yx8" path="res://scenes/hurt_box.tscn" id="2_r8nw2"]
+[ext_resource type="PackedScene" uid="uid://gcfjxkgyti8o" path="res://scenes/hit_box.tscn" id="3_b8vdy"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="5_fh7el"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4cs5v"]
+atlas = ExtResource("1_umauv")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvjio"]
+atlas = ExtResource("1_umauv")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aqhnx"]
+atlas = ExtResource("1_umauv")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xtkac"]
+atlas = ExtResource("1_umauv")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlcy5"]
+atlas = ExtResource("1_umauv")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nh535"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4cs5v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvjio")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aqhnx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtkac")
+}],
+"loop": true,
+"name": &"crawl",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jlcy5")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g6pvm"]
+size = Vector2(16, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ysrsc"]
+size = Vector2(10, 5)
+
+[node name="CrawlingEnemy" type="Node2D"]
+script = ExtResource("1_7c8f0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_nh535")
+animation = &"crawl"
+autoplay = "crawl"
+
+[node name="HurtBox" parent="." instance=ExtResource("2_r8nw2")]
+collision_layer = 32
+
+[node name="Hurt" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_g6pvm")
+debug_color = Color(0.968627, 0.364706, 0.278431, 0.286275)
+
+[node name="HitBox" parent="." instance=ExtResource("3_b8vdy")]
+collision_mask = 16
+
+[node name="Hit" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_ysrsc")
+
+[node name="FloorCast" type="RayCast2D" parent="."]
+position = Vector2(0, -3)
+target_position = Vector2(0, 8)
+
+[node name="WallCast" type="RayCast2D" parent="."]
+position = Vector2(0, -4)
+target_position = Vector2(4, 0)
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("5_fh7el")
+max_health = 2
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+[connection signal="no_health" from="Stats" to="." method="_on_stats_no_health"]

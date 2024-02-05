@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3 uid="uid://cws0lyxn4kxpw"]
+
+[ext_resource type="Script" path="res://scripts/walking_enemy.gd" id="1_1vvr3"]
+[ext_resource type="Texture2D" uid="uid://1nptgtmg7ffp" path="res://enemies/walking_enemy.png" id="1_801d0"]
+[ext_resource type="PackedScene" uid="uid://qbi5wmnc6yx8" path="res://scenes/hurt_box.tscn" id="3_dr7mi"]
+[ext_resource type="PackedScene" uid="uid://gcfjxkgyti8o" path="res://scenes/hit_box.tscn" id="4_px22y"]
+[ext_resource type="PackedScene" uid="uid://cbq6vuycxmmw0" path="res://scenes/stats.tscn" id="5_5diq5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aom6b"]
+size = Vector2(8, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s20mv"]
+size = Vector2(16, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fpih5"]
+size = Vector2(16, 11)
+
+[node name="WalkingEnemy" type="CharacterBody2D"]
+collision_layer = 8
+floor_constant_speed = true
+floor_snap_length = 2.0
+script = ExtResource("1_1vvr3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -9)
+texture = ExtResource("1_801d0")
+flip_h = true
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_aom6b")
+
+[node name="FloorCast" type="RayCast2D" parent="."]
+position = Vector2(0, -5)
+target_position = Vector2(0, 12)
+
+[node name="HurtBox" parent="." instance=ExtResource("3_dr7mi")]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -7.5)
+shape = SubResource("RectangleShape2D_s20mv")
+
+[node name="HitBox" parent="." instance=ExtResource("4_px22y")]
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -9.5)
+shape = SubResource("RectangleShape2D_fpih5")
+
+[node name="Stats" parent="." instance=ExtResource("5_5diq5")]
+
+[node name="DeathEffectLocation" type="Marker2D" parent="."]
+position = Vector2(0, -9)
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+[connection signal="no_health" from="Stats" to="." method="_on_stats_no_health"]

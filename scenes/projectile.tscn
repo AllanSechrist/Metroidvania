@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d7jvo5cy21yq"]
+
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_3xhiw"]
+[ext_resource type="PackedScene" uid="uid://gcfjxkgyti8o" path="res://scenes/hit_box.tscn" id="2_n3ll1"]
+
+[node name="Projectile" type="Node2D"]
+z_index = 15
+script = ExtResource("1_3xhiw")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="HitBox" parent="." instance=ExtResource("2_n3ll1")]
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_hit_box_area_entered"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

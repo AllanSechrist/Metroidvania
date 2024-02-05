@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://dd5qm5mpqrust"]
+
+[ext_resource type="PackedScene" uid="uid://d7jvo5cy21yq" path="res://scenes/projectile.tscn" id="1_bu6sd"]
+[ext_resource type="Texture2D" uid="uid://cc2f1kg4qtda6" path="res://player/player_missile.png" id="2_j6dp3"]
+[ext_resource type="Script" path="res://scripts/missile.gd" id="2_sqjq1"]
+[ext_resource type="Texture2D" uid="uid://dudoyx8p40md3" path="res://effects/particle_effect.png" id="3_bs8ly"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_180wj"]
+size = Vector2(13, 4)
+
+[sub_resource type="Curve" id="Curve_kj11g"]
+_data = [Vector2(0, 0.981818), 0.0, 0.0, 0, 0, Vector2(1, 0.290909), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Missile" instance=ExtResource("1_bu6sd")]
+script = ExtResource("2_sqjq1")
+speed = 150
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_j6dp3")
+
+[node name="VisibleOnScreenNotifier2D" parent="." index="1"]
+position = Vector2(-0.5, 0)
+scale = Vector2(0.75, 0.3)
+
+[node name="HitBox" parent="." index="2"]
+collision_mask = 35
+damage = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" index="0"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_180wj")
+
+[node name="Flames" type="CPUParticles2D" parent="." index="3"]
+position = Vector2(-7, 0)
+amount = 6
+lifetime = 0.2
+preprocess = 2.0
+texture = ExtResource("3_bs8ly")
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector2(-1, 0)
+spread = 10.0
+gravity = Vector2(0, 10)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+angular_velocity_min = 500.0
+angular_velocity_max = 1000.0
+scale_amount_curve = SubResource("Curve_kj11g")

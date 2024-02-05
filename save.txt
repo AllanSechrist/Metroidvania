@@ -1,0 +1,1 @@
+{"level":{"file_path":"res://scenes/level_one.tscn"},"player":{"max_health":4,"max_missiles":0,"x":634.873229980469,"y":-65.2949905395508}}
